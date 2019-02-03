@@ -2,20 +2,20 @@ package com.schibsted.spain.friends.domain;
 
 public class Friendship {
 
-    private String requesterUsername;
-    private String requestedUsername;
+    private String username;
+    private String friendUsername;
 
-    public String getRequester() {
-        return requesterUsername;
+    public String getUsername() {
+        return username;
     }
 
-    public String getRequested() {
-        return requestedUsername;
+    public String getFriendUsername() {
+        return friendUsername;
     }
 
-    public Friendship(String requester, String requested) {
-        this.requesterUsername = requester;
-        this.requestedUsername = requested;
+    public Friendship(String username, String friendUsername) {
+        this.username = username;
+        this.friendUsername = friendUsername;
     }
 
 }

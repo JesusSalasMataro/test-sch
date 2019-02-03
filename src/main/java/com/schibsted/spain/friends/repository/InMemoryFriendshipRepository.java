@@ -6,6 +6,7 @@ import com.schibsted.spain.friends.domain.FriendshipRequest;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class InMemoryFriendshipRepository implements FriendshipRepository {
 
@@ -33,9 +34,17 @@ public class InMemoryFriendshipRepository implements FriendshipRepository {
     public boolean existsFriendshipRequest(String requesterUsername, String requestedUsername) {
         return friendshipsRequests.stream()
             .anyMatch(friendship ->
-                friendship.getRequester().equals(requesterUsername) &&
-                friendship.getRequested().equals(requestedUsername) &&
-                !friendship.isDeclined()
+                (
+                    friendship.getRequester().equals(requesterUsername) &&
+                    friendship.getRequested().equals(requestedUsername) &&
+                    !friendship.isDeclined()
+                )
+                ||
+                (
+                    friendship.getRequester().equals(requestedUsername) &&
+                    friendship.getRequested().equals(requesterUsername) &&
+                    !friendship.isDeclined()
+                )
             );
     }
 
@@ -43,8 +52,8 @@ public class InMemoryFriendshipRepository implements FriendshipRepository {
     public boolean existsFriendship(String requesterUsername, String requestedUsername) {
         return friendships.stream()
             .anyMatch(friendship ->
-                friendship.getRequester().equals(requesterUsername) &&
-                friendship.getRequested().equals(requestedUsername)
+                friendship.getUsername().equals(requesterUsername) &&
+                friendship.getFriendUsername().equals(requestedUsername)
             );
     }
 
@@ -52,13 +61,30 @@ public class InMemoryFriendshipRepository implements FriendshipRepository {
     public void declineFriendshipRequest(String requesterUsername, String requestedUsername) {
         friendshipsRequests.stream()
             .filter(friendshipRequest ->
-                friendshipRequest.getRequester().equals(requesterUsername) &&
-                friendshipRequest.getRequested().equals(requestedUsername) &&
-                !friendshipRequest.isDeclined()
+                (
+                    friendshipRequest.getRequester().equals(requesterUsername) &&
+                    friendshipRequest.getRequested().equals(requestedUsername) &&
+                    !friendshipRequest.isDeclined()
+                )
+                ||
+                (
+                    friendshipRequest.getRequested().equals(requesterUsername) &&
+                    friendshipRequest.getRequester().equals(requestedUsername) &&
+                    !friendshipRequest.isDeclined()
+                )
             )
             .findAny()
             .get()
             .decline();
+    }
+
+    @Override
+    public Collection<String> getFriends(String username) {
+        return friendships.stream()
+            .filter(friendship -> friendship.getUsername().equals(username))
+            .map(friendship -> friendship.getFriendUsername())
+            .collect(Collectors.toList()
+        );
     }
 
 }

@@ -1,8 +1,6 @@
 package com.schibsted.spain.friends.application;
 
-import com.schibsted.spain.friends.domain.FriendshipRequest;
-
-import java.util.List;
+import java.util.Collection;
 
 public interface FriendshipRepository {
 
@@ -16,4 +14,5 @@ public interface FriendshipRepository {
 
     void declineFriendshipRequest(String requesterUsername, String requestedUsername);
 
+    Collection<String> getFriends(String username);
 }

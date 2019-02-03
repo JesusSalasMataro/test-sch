@@ -85,10 +85,13 @@ public class FriendshipServiceShould {
     }
 
     @Test
-    public void set_users_as_friends_when_requested_friendship_is_accepted() {
+    public void set_users_as_friends_when_requested_friendship_is_accepted()
+        throws UnauthorizedFriendshipActionException {
+
         String requesterUsername = "jesus";
         String requestedUsername = "joana";
         when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendshipRequest(requesterUsername, requestedUsername)).thenReturn(true);
 
         sut.acceptFriendShip(requesterUsername, requestedUsername);
 
@@ -115,6 +118,7 @@ public class FriendshipServiceShould {
         String requesterUsername = "jesus";
         String requestedUsername = "joana";
         when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendshipRequest(requesterUsername, requestedUsername)).thenReturn(true);
 
         sut.declineFrienshipRequest(requesterUsername, requestedUsername);
 
@@ -133,4 +137,86 @@ public class FriendshipServiceShould {
         sut.declineFrienshipRequest(requesterUsername, requestedUsername);
     }
 
+    @Test
+    public void allow_list_friends_of_a_registered_user() {
+
+        String username = "jesus";
+
+        sut.getFriends(username);
+
+        Mockito.verify(friendshipRepository, times(1))
+            .getFriends(username);
+    }
+
+    @Test(expected = UnauthorizedFriendshipActionException.class)
+    public void not_allow_accept_friendship_request_already_accepted()
+        throws UnauthorizedFriendshipActionException {
+
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendship(requesterUsername, requestedUsername)).thenReturn(true);
+
+        sut.acceptFriendShip(requesterUsername, requestedUsername);
+    }
+
+    @Test(expected = UnauthorizedFriendshipActionException.class)
+    public void not_allow_accept_friendship_without_a_previous_friendship_request()
+            throws UnauthorizedFriendshipActionException {
+
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendshipRequest(requesterUsername, requestedUsername)).thenReturn(false);
+
+        sut.acceptFriendShip(requesterUsername, requestedUsername);
+
+        Mockito.verify(friendshipRepository, times(1))
+            .addFriendshipRequest(requesterUsername, requestedUsername);
+    }
+
+    @Test
+    public void allow_accept_friendship_after_friendship_request()
+        throws UnauthorizedFriendshipActionException {
+
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendshipRequest(requesterUsername, requestedUsername)).thenReturn(true);
+
+        sut.acceptFriendShip(requesterUsername, requestedUsername);
+
+        Mockito.verify(friendshipRepository, times(1))
+            .addFriendship(requesterUsername, requestedUsername);
+    }
+
+    @Test
+    public void allow_accept_friendship_after_friendship_request_with_any_users_order()
+        throws UnauthorizedFriendshipActionException {
+
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendshipRequest(requestedUsername, requesterUsername)).thenReturn(true);
+
+        sut.acceptFriendShip(requestedUsername, requesterUsername);
+
+        Mockito.verify(friendshipRepository, times(1))
+            .addFriendship(requestedUsername, requesterUsername);
+    }
+
+    @Test
+    public void allow_decline_friendship_after_friendship_request_with_any_users_order()
+        throws UnauthorizedFriendshipActionException {
+
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendshipRequest(requestedUsername, requesterUsername)).thenReturn(true);
+
+        sut.declineFrienshipRequest(requestedUsername, requesterUsername);
+
+        Mockito.verify(friendshipRepository, times(1))
+            .declineFriendshipRequest(requestedUsername, requesterUsername);
+    }
 }

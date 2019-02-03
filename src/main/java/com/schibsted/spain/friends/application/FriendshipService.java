@@ -3,6 +3,9 @@ package com.schibsted.spain.friends.application;
 import com.schibsted.spain.friends.exceptions.DuplicatedFriendShipRequestException;
 import com.schibsted.spain.friends.exceptions.UnauthorizedFriendshipActionException;
 
+import java.util.Collection;
+import java.util.List;
+
 public class FriendshipService {
 
     private UserService userService;
@@ -33,7 +36,17 @@ public class FriendshipService {
         friendshipRepository.addFriendshipRequest(requester, requested);
     }
 
-    public void acceptFriendShip(String requester, String requested) {
+    public void acceptFriendShip(String requester, String requested)
+        throws UnauthorizedFriendshipActionException {
+
+        if (friendshipRepository.existsFriendship(requester, requested)) {
+            throw new UnauthorizedFriendshipActionException(requested, requester);
+        }
+
+        if (!friendshipRepository.existsFriendshipRequest(requester, requested)) {
+            throw new UnauthorizedFriendshipActionException(requested, requester);
+        }
+
         friendshipRepository.addFriendship(requester, requested);
     }
 
@@ -41,6 +54,11 @@ public class FriendshipService {
         throws UnauthorizedFriendshipActionException {
 
         verifyUsers(requester, requested);
+
+        if (!friendshipRepository.existsFriendshipRequest(requester, requested)) {
+            throw new UnauthorizedFriendshipActionException(requested, requester);
+        }
+
         friendshipRepository.declineFriendshipRequest(requester, requested);
     }
 
@@ -57,4 +75,7 @@ public class FriendshipService {
     }
 
 
+    public Collection<String> getFriends(String username) {
+        return friendshipRepository.getFriends(username);
+    }
 }
