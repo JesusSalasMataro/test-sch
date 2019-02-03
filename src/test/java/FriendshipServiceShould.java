@@ -1,11 +1,8 @@
 import com.schibsted.spain.friends.application.FriendshipRepository;
 import com.schibsted.spain.friends.application.FriendshipService;
 import com.schibsted.spain.friends.application.UserService;
-import com.schibsted.spain.friends.exceptions.InvalidPasswordException;
-import com.schibsted.spain.friends.exceptions.InvalidUsernameException;
-import com.schibsted.spain.friends.exceptions.UnauthorizedFriendShipException;
-import com.schibsted.spain.friends.exceptions.UserAlreadyExistsException;
-import org.junit.BeforeClass;
+import com.schibsted.spain.friends.exceptions.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -19,64 +16,121 @@ public class FriendshipServiceShould {
     private static FriendshipRepository friendshipRepository;
     private static FriendshipService sut;
 
-    @BeforeClass
-    public static void numOnceBeforeEachTest() {
+    @Before
+    public void beforeEachTest() {
         userService = mock(UserService.class);
         friendshipRepository = mock(FriendshipRepository.class);
-        doNothing().when(friendshipRepository).saveFriendshipRequest(isA(String.class), isA(String.class));
+        doNothing().when(friendshipRepository).addFriendshipRequest(isA(String.class), isA(String.class));
         sut = new FriendshipService(userService, friendshipRepository);
     }
 
     @Test
-    public void allow_a_friendsihp_request_if_both_users_are_registered() throws InvalidUsernameException, UserAlreadyExistsException, InvalidPasswordException, UnauthorizedFriendShipException {
+    public void allow_a_friendsihp_request_if_both_users_are_registered()
+        throws UnauthorizedFriendshipActionException, DuplicatedFriendShipRequestException {
+
         String requesterUsername = "jesus";
         String requestedUsername = "joana";
-
         when(userService.exists(isA(String.class))).thenReturn(true);
 
-        sut.RequestFriendship(requesterUsername, requestedUsername);
+        sut.requestFriendship(requesterUsername, requestedUsername);
 
         Mockito.verify(friendshipRepository, times(1))
-                .saveFriendshipRequest(isA(String.class), isA(String.class));
+            .addFriendshipRequest(requesterUsername, requestedUsername);
     }
 
-    @Test(expected = UnauthorizedFriendShipException.class)
-    public void dont_allow_a_friendship_request_if_the_requester_user_is_not_registered() throws UnauthorizedFriendShipException {
+    @Test(expected = UnauthorizedFriendshipActionException.class)
+    public void not_allow_a_friendship_request_if_the_requester_user_is_not_registered()
+        throws UnauthorizedFriendshipActionException, DuplicatedFriendShipRequestException {
+
         String requesterUsername = "jesus";
         String requestedUsername = "joana";
         when(userService.exists(requesterUsername)).thenReturn(false);
         when(userService.exists(requestedUsername)).thenReturn(true);
 
-        sut.RequestFriendship(requesterUsername, requestedUsername);
+        sut.requestFriendship(requesterUsername, requestedUsername);
     }
 
-    @Test(expected = UnauthorizedFriendShipException.class)
-    public void dont_allow_a_friendship_request_if_the_requested_user_is_not_registered() throws UnauthorizedFriendShipException {
+    @Test(expected = UnauthorizedFriendshipActionException.class)
+    public void not_allow_a_friendship_request_if_the_requested_user_is_not_registered()
+        throws UnauthorizedFriendshipActionException, DuplicatedFriendShipRequestException {
+
         String requesterUsername = "jesus";
         String requestedUsername = "joana";
         when(userService.exists(requesterUsername)).thenReturn(true);
         when(userService.exists(requestedUsername)).thenReturn(false);
 
-        sut.RequestFriendship(requesterUsername, requestedUsername);
+        sut.requestFriendship(requesterUsername, requestedUsername);
     }
 
-    @Test(expected = UnauthorizedFriendShipException.class)
-    public void dont_allow_a_friendship_request_from_an_user_to_himself() throws UnauthorizedFriendShipException {
+    @Test(expected = UnauthorizedFriendshipActionException.class)
+    public void not_allow_a_friendship_request_from_an_user_to_himself()
+        throws UnauthorizedFriendshipActionException, DuplicatedFriendShipRequestException {
+
         String username = "jesus";
         when(userService.exists(username)).thenReturn(true);
 
-        sut.RequestFriendship(username, username);
+        sut.requestFriendship(username, username);
     }
 
-    @Test(expected = UnauthorizedFriendShipException.class)
-    public void dont_allow_a_friendship_request_from_an_user_with_pending_request_from_him() throws UnauthorizedFriendShipException {
+    @Test(expected = DuplicatedFriendShipRequestException.class)
+    public void not_allow_a_friendship_request_from_an_user_with_pending_request_from_him()
+        throws UnauthorizedFriendshipActionException, DuplicatedFriendShipRequestException {
+
         String requesterUsername = "jesus";
         String requestedUsername = "joana";
-        when(userService.exists(requesterUsername)).thenReturn(true);
-        when(userService.exists(requestedUsername)).thenReturn(true);
+        when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendshipRequest(requesterUsername, requestedUsername)).thenReturn(true);
 
-        sut.RequestFriendship(requesterUsername, requestedUsername);
-        sut.RequestFriendship(requesterUsername, requestedUsername);
+        sut.requestFriendship(requesterUsername, requestedUsername);
+    }
+
+    @Test
+    public void set_users_as_friends_when_requested_friendship_is_accepted() {
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(true);
+
+        sut.acceptFriendShip(requesterUsername, requestedUsername);
+
+        Mockito.verify(friendshipRepository, times(1))
+            .addFriendship(requesterUsername, requestedUsername);
+    }
+
+    @Test(expected = UnauthorizedFriendshipActionException.class)
+    public void not_allow_request_friendship_between_friends()
+        throws DuplicatedFriendShipRequestException, UnauthorizedFriendshipActionException {
+
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(true);
+        when(friendshipRepository.existsFriendship(requesterUsername, requestedUsername)).thenReturn(true);
+
+        sut.requestFriendship(requesterUsername, requestedUsername);
+    }
+
+    @Test
+    public void allow_registered_users_decline_a_friendship_request()
+        throws UnauthorizedFriendshipActionException {
+
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(true);
+
+        sut.declineFrienshipRequest(requesterUsername, requestedUsername);
+
+        Mockito.verify(friendshipRepository, times(1))
+            .declineFriendshipRequest(requesterUsername, requestedUsername);
+    }
+
+    @Test(expected = UnauthorizedFriendshipActionException.class)
+    public void not_allow_unregistered_users_decline_a_friendship_request()
+        throws UnauthorizedFriendshipActionException {
+
+        String requesterUsername = "jesus";
+        String requestedUsername = "joana";
+        when(userService.exists(isA(String.class))).thenReturn(false);
+
+        sut.declineFrienshipRequest(requesterUsername, requestedUsername);
     }
 
 }

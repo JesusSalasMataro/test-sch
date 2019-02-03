@@ -1,7 +1,6 @@
 package com.schibsted.spain.friends.legacy;
 
 import com.schibsted.spain.friends.application.FriendshipService;
-import com.schibsted.spain.friends.exceptions.UnauthorizedFriendShipException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,8 @@ public class FriendshipLegacyController {
             @RequestHeader("X-Password") String password
     ) {
         try {
-            friendshipService.RequestFriendship(usernameFrom, usernameTo);
-        } catch (UnauthorizedFriendShipException e) {
+            friendshipService.requestFriendship(usernameFrom, usernameTo);
+        } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
