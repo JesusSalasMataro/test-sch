@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 @RestController
 @RequestMapping("/friendship")
 public class FriendshipLegacyController {
@@ -61,10 +63,19 @@ public class FriendshipLegacyController {
         return new ResponseEntity(HttpStatus.CREATED);       }
 
     @GetMapping("/list")
-    Object listFriends(
+    ResponseEntity listFriends(
             @RequestParam("username") String username,
             @RequestHeader("X-Password") String password
     ) {
-        throw new RuntimeException("not implemented yet!");
+        Collection<String> friends;
+
+        try {
+            friends = friendshipService.getFriends(username);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity(HttpStatus.CREATED);
     }
+
 }

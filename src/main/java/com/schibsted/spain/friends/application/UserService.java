@@ -14,6 +14,7 @@ public class UserService {
 
     public UserService (FieldValidatorService validator, SecurityService securityService,
                         UserRepository userRepository) {
+
         this.validator = validator;
         this.securityService = securityService;
         this.userRepository = userRepository;

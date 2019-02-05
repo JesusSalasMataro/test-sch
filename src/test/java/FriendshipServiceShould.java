@@ -138,7 +138,8 @@ public class FriendshipServiceShould {
     }
 
     @Test
-    public void allow_list_friends_of_a_registered_user() {
+    public void allow_list_friends_of_a_registered_user()
+        throws UnauthorizedFriendshipActionException {
 
         String username = "jesus";
 

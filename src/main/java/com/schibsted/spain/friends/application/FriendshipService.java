@@ -4,7 +4,6 @@ import com.schibsted.spain.friends.exceptions.DuplicatedFriendShipRequestExcepti
 import com.schibsted.spain.friends.exceptions.UnauthorizedFriendshipActionException;
 
 import java.util.Collection;
-import java.util.List;
 
 public class FriendshipService {
 
@@ -62,8 +61,15 @@ public class FriendshipService {
         friendshipRepository.declineFriendshipRequest(requester, requested);
     }
 
-    private void verifyUsers(String requester, String requested)
+    public Collection<String> getFriends(String username)
         throws UnauthorizedFriendshipActionException {
+
+        verifyUser(username);
+        return friendshipRepository.getFriends(username);
+    }
+
+    private void verifyUsers(String requester, String requested)
+            throws UnauthorizedFriendshipActionException {
 
         if (!userService.exists(requester)) {
             throw new UnauthorizedFriendshipActionException(requester);
@@ -74,8 +80,11 @@ public class FriendshipService {
         }
     }
 
+    private void verifyUser(String username)
+        throws UnauthorizedFriendshipActionException {
 
-    public Collection<String> getFriends(String username) {
-        return friendshipRepository.getFriends(username);
+        if (!userService.exists(username)) {
+            throw new UnauthorizedFriendshipActionException(username);
+        }
     }
 }
