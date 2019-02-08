@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 
 public class InMemoryFriendshipRepository implements FriendshipRepository {
 
-    Collection<FriendshipRequest> friendshipsRequests;
-    Collection<Friendship> friendships;
+    protected Collection<FriendshipRequest> friendshipsRequests;
+    protected Collection<Friendship> friendships;
 
     public InMemoryFriendshipRepository() {
         friendshipsRequests = new ArrayList<>();
