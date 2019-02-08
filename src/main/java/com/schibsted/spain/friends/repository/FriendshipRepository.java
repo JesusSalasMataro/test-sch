@@ -1,4 +1,4 @@
-package com.schibsted.spain.friends.application;
+package com.schibsted.spain.friends.repository;
 
 import java.util.Collection;
 
@@ -15,4 +15,5 @@ public interface FriendshipRepository {
     void declineFriendshipRequest(String requesterUsername, String requestedUsername);
 
     Collection<String> getFriends(String username);
+
 }

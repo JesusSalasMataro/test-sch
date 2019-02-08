@@ -1,11 +1,9 @@
 package com.schibsted.spain.friends.repository;
 
-import com.schibsted.spain.friends.application.UserRepository;
 import com.schibsted.spain.friends.domain.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class InMemoryUsersRepository implements UserRepository {
 
