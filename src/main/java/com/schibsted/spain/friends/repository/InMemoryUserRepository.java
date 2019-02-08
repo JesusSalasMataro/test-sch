@@ -24,4 +24,13 @@ public class InMemoryUserRepository implements UserRepository {
         return users.stream()
             .anyMatch(u -> u.getUsername().equals(username));
     }
+
+    @Override
+    public boolean isValid(User user) {
+        return users.stream()
+            .anyMatch(u ->
+                u.getUsername().equals(user.getUsername()) &&
+                u.getPassword().equals(user.getPassword())
+            );
+    }
 }
