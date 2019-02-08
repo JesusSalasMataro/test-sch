@@ -1,32 +1,32 @@
 package com.schibsted.spain.friends.application;
 
+import com.schibsted.spain.friends.domain.Password;
 import com.schibsted.spain.friends.domain.User;
 import com.schibsted.spain.friends.domainservices.FieldValidatorService;
-import com.schibsted.spain.friends.domainservices.SecurityService;
+import com.schibsted.spain.friends.exceptions.InvalidCredentialsException;
 import com.schibsted.spain.friends.exceptions.InvalidPasswordException;
 import com.schibsted.spain.friends.exceptions.InvalidUsernameException;
 import com.schibsted.spain.friends.exceptions.UserAlreadyExistsException;
+import com.schibsted.spain.friends.repository.UserRepository;
 
 public class UserService {
+
     private FieldValidatorService validator;
-    private SecurityService securityService;
     private UserRepository userRepository;
 
-    public UserService (FieldValidatorService validator, SecurityService securityService,
-                        UserRepository userRepository) {
+    public UserService (FieldValidatorService validator, UserRepository userRepository) {
 
         this.validator = validator;
-        this.securityService = securityService;
         this.userRepository = userRepository;
     }
 
-    public void registerNewUser(String username, String password)
+    public void registerNewUser(String username, String plainTextPassword)
             throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
 
         validator.validateUsername(username);
-        validator.validatePassword(password);
+        validator.validatePassword(plainTextPassword);
 
-        password = securityService.encript(password);
+        Password password = new Password(plainTextPassword);
 
         if (exists(username)) {
             throw new UserAlreadyExistsException();
@@ -36,7 +36,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+
     public boolean exists(String username) {
         return userRepository.exists(username);
+    }
+
+    public void validate(User user) throws InvalidCredentialsException {
+        if (!userRepository.isValid(user)) {
+            throw new InvalidCredentialsException(user);
+        }
     }
 }

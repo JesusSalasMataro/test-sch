@@ -1,4 +1,6 @@
-import com.schibsted.spain.friends.application.FriendshipRepository;
+package unit;
+
+import com.schibsted.spain.friends.repository.FriendshipRepository;
 import com.schibsted.spain.friends.application.FriendshipService;
 import com.schibsted.spain.friends.application.UserService;
 import com.schibsted.spain.friends.exceptions.*;

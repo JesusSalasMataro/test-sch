@@ -2,9 +2,9 @@ package com.schibsted.spain.friends.domain;
 
 public class User {
     private String username;
-    private String password;
+    private Password password;
 
-    public User(String username, String password) {
+    public User(String username, Password password) {
         this.username = username;
         this.password = password;
     }
@@ -13,7 +13,7 @@ public class User {
         return username;
     }
 
-    public String getPassword() {
+    public Password getPassword() {
         return password;
     }
 }

@@ -1,13 +1,12 @@
 package com.schibsted.spain.friends.configuration;
 
-import com.schibsted.spain.friends.application.FriendshipRepository;
+import com.schibsted.spain.friends.repository.FriendshipRepository;
 import com.schibsted.spain.friends.application.FriendshipService;
-import com.schibsted.spain.friends.application.UserRepository;
+import com.schibsted.spain.friends.repository.UserRepository;
 import com.schibsted.spain.friends.application.UserService;
 import com.schibsted.spain.friends.domainservices.FieldValidatorService;
-import com.schibsted.spain.friends.domainservices.SecurityService;
 import com.schibsted.spain.friends.repository.InMemoryFriendshipRepository;
-import com.schibsted.spain.friends.repository.InMemoryUserRepository;
+import com.schibsted.spain.friends.repository.InMemoryUsersRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,20 +19,14 @@ public class DependenciesConfiguration {
     }
 
     @Bean
-    SecurityService getSecurityService() {
-        return new SecurityService();
-    }
-
-    @Bean
     UserRepository getUserRepository() {
-        return new InMemoryUserRepository();
+        return new InMemoryUsersRepository();
     }
 
     @Bean
-    UserService getUserService(FieldValidatorService validatorService, SecurityService securityService,
-      UserRepository userRepository) {
+    UserService getUserService(FieldValidatorService validatorService, UserRepository userRepository) {
 
-        return new UserService(validatorService, securityService, userRepository);
+        return new UserService(validatorService, userRepository);
     }
 
     @Bean

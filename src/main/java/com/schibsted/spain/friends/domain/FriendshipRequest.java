@@ -28,4 +28,10 @@ public class FriendshipRequest {
         return this.declined;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return ((FriendshipRequest)obj).requesterUsername.equals(this.requesterUsername) &&
+            ((FriendshipRequest)obj).requestedUsername.equals(this.requestedUsername) &&
+            ((FriendshipRequest)obj).declined == this.declined;
+    }
 }

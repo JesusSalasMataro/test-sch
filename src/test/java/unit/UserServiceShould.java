@@ -1,4 +1,6 @@
-import com.schibsted.spain.friends.application.UserRepository;
+package unit;
+
+import com.schibsted.spain.friends.repository.UserRepository;
 import com.schibsted.spain.friends.application.UserService;
 import com.schibsted.spain.friends.domain.User;
 import com.schibsted.spain.friends.domainservices.FieldValidatorService;
