@@ -4,13 +4,14 @@ import com.schibsted.spain.friends.application.UserRepository;
 import com.schibsted.spain.friends.domain.User;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class InMemoryUserRepository implements UserRepository {
+public class InMemoryUsersRepository implements UserRepository {
 
-    List<User> users;
+    protected Collection<User> users;
 
-    public InMemoryUserRepository() {
+    public InMemoryUsersRepository() {
         users = new ArrayList<>();
     }
 
