@@ -7,6 +7,7 @@ import com.schibsted.spain.friends.domain.FriendshipRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InMemoryFriendshipRepository implements FriendshipRepository {
 
@@ -52,8 +53,15 @@ public class InMemoryFriendshipRepository implements FriendshipRepository {
     public boolean existsFriendship(String requesterUsername, String requestedUsername) {
         return friendships.stream()
             .anyMatch(friendship ->
-                friendship.getUsername().equals(requesterUsername) &&
-                friendship.getFriendUsername().equals(requestedUsername)
+                (
+                    friendship.getUsername().equals(requesterUsername) &&
+                    friendship.getFriendUsername().equals(requestedUsername)
+                )
+                ||
+                (
+                    friendship.getFriendUsername().equals(requesterUsername) &&
+                    friendship.getUsername().equals(requestedUsername)
+                )
             );
     }
 
@@ -80,9 +88,14 @@ public class InMemoryFriendshipRepository implements FriendshipRepository {
 
     @Override
     public Collection<String> getFriends(String username) {
-        return friendships.stream()
-            .filter(friendship -> friendship.getUsername().equals(username))
-            .map(friendship -> friendship.getFriendUsername())
+        return Stream.concat(
+            friendships.stream()
+                .filter(friendship -> friendship.getUsername().equals(username))
+                .map(friendship -> friendship.getFriendUsername()),
+            friendships.stream()
+                .filter(friendship -> friendship.getFriendUsername().equals(username))
+                .map(friendship -> friendship.getUsername())
+            )
             .collect(Collectors.toList()
         );
     }

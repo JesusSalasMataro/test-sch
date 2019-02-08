@@ -142,6 +142,7 @@ public class FriendshipServiceShould {
         throws UnauthorizedFriendshipActionException {
 
         String username = "jesus";
+        when(userService.exists(isA(String.class))).thenReturn(true);
 
         sut.getFriends(username);
 

@@ -2,7 +2,6 @@ import com.schibsted.spain.friends.application.UserRepository;
 import com.schibsted.spain.friends.application.UserService;
 import com.schibsted.spain.friends.domain.User;
 import com.schibsted.spain.friends.domainservices.FieldValidatorService;
-import com.schibsted.spain.friends.domainservices.SecurityService;
 import com.schibsted.spain.friends.exceptions.InvalidPasswordException;
 import com.schibsted.spain.friends.exceptions.InvalidUsernameException;
 
@@ -18,18 +17,15 @@ import static org.mockito.Mockito.*;
 public class UserServiceShould {
 
     private static FieldValidatorService validatorService;
-    private static SecurityService securityService;
     private static UserRepository userRepository;
     private static UserService sut;
 
     @Before
     public void numOnceBeforeEachTest() {
         validatorService = new FieldValidatorService();
-        securityService = mock(SecurityService.class);
-        when(securityService.encript(isA(String.class))).thenReturn("aabbccddeeff");
         userRepository = mock(UserRepository.class);
         doNothing().when(userRepository).save(isA(User.class));
-        sut = new UserService(validatorService, securityService, userRepository);
+        sut = new UserService(validatorService, userRepository);
     }
 
     @Test(expected = InvalidUsernameException.class)
@@ -71,13 +67,13 @@ public class UserServiceShould {
     @Test
     public void call_encript_after_validations() throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
         validatorService = mock(FieldValidatorService.class);
-        sut = new UserService(validatorService, securityService, userRepository);
+        sut = new UserService(validatorService, userRepository);
 
         sut.registerNewUser("jesus", "abcdefgh");
 
-        InOrder inOrder = inOrder(validatorService, securityService);
+        InOrder inOrder = inOrder(validatorService);
         inOrder.verify(validatorService).validateUsername(isA(String.class));
         inOrder.verify(validatorService).validatePassword(isA(String.class));
-        inOrder.verify(securityService).encript(isA(String.class));
     }
+    
 }
