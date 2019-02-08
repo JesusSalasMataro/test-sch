@@ -39,6 +39,8 @@ public class FriendshipService {
     public void acceptFriendShip(String requester, String requested)
         throws UnauthorizedFriendshipActionException {
 
+        verifyUsers(requester, requested);
+
         if (friendshipRepository.existsFriendship(requester, requested)) {
             throw new UnauthorizedFriendshipActionException(requested, requester);
         }
