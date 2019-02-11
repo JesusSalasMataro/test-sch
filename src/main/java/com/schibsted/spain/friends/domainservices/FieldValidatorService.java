@@ -3,8 +3,8 @@ package com.schibsted.spain.friends.domainservices;
 import com.schibsted.spain.friends.domain.BaseValidationRule;
 import com.schibsted.spain.friends.domain.CharactersRule;
 import com.schibsted.spain.friends.domain.LengthRule;
-import com.schibsted.spain.friends.exceptions.InvalidPasswordException;
-import com.schibsted.spain.friends.exceptions.InvalidUsernameException;
+import com.schibsted.spain.friends.application.exceptions.InvalidPasswordException;
+import com.schibsted.spain.friends.application.exceptions.InvalidUsernameException;
 
 import java.util.ArrayList;
 import java.util.List;

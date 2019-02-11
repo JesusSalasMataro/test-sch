@@ -1,15 +1,14 @@
-package com.schibsted.spain.friends.exceptions;
+package com.schibsted.spain.friends.application.exceptions;
 
 import com.schibsted.spain.friends.domain.BaseValidationRule;
 
 import java.util.List;
 
-public class InvalidUsernameException extends Exception {
-
+public class InvalidPasswordException extends Exception {
     private List<BaseValidationRule> failedRules;
 
-    public InvalidUsernameException(List<BaseValidationRule> failedRules) {
-        super("Invalid username");
+    public InvalidPasswordException(List<BaseValidationRule> failedRules) {
+        super("Invalid password");
         this.failedRules = failedRules;
     }
 
@@ -17,4 +16,3 @@ public class InvalidUsernameException extends Exception {
         return failedRules;
     }
 }
-

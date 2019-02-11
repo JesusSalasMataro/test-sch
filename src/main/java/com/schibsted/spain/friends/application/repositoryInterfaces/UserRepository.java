@@ -1,4 +1,4 @@
-package com.schibsted.spain.friends.repository;
+package com.schibsted.spain.friends.application.repositoryInterfaces;
 
 import com.schibsted.spain.friends.domain.User;
 

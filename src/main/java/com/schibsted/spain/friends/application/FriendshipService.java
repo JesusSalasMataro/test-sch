@@ -1,8 +1,8 @@
 package com.schibsted.spain.friends.application;
 
-import com.schibsted.spain.friends.exceptions.DuplicatedFriendShipRequestException;
-import com.schibsted.spain.friends.exceptions.UnauthorizedFriendshipActionException;
-import com.schibsted.spain.friends.repository.FriendshipRepository;
+import com.schibsted.spain.friends.application.exceptions.DuplicatedFriendShipRequestException;
+import com.schibsted.spain.friends.application.exceptions.UnauthorizedFriendshipActionException;
+import com.schibsted.spain.friends.application.repositoryInterfaces.FriendshipRepository;
 
 import java.util.Collection;
 

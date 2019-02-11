@@ -1,9 +1,9 @@
 package unit;
 
-import com.schibsted.spain.friends.repository.FriendshipRepository;
+import com.schibsted.spain.friends.application.repositoryInterfaces.FriendshipRepository;
 import com.schibsted.spain.friends.application.FriendshipService;
 import com.schibsted.spain.friends.application.UserService;
-import com.schibsted.spain.friends.exceptions.*;
+import com.schibsted.spain.friends.application.exceptions.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

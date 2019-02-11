@@ -1,4 +1,4 @@
-package com.schibsted.spain.friends.exceptions;
+package com.schibsted.spain.friends.application.exceptions;
 
 import com.schibsted.spain.friends.domain.User;
 

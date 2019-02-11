@@ -1,9 +1,9 @@
 package com.schibsted.spain.friends.legacy;
 
 import com.schibsted.spain.friends.application.UserService;
-import com.schibsted.spain.friends.exceptions.InvalidPasswordException;
-import com.schibsted.spain.friends.exceptions.InvalidUsernameException;
-import com.schibsted.spain.friends.exceptions.UserAlreadyExistsException;
+import com.schibsted.spain.friends.application.exceptions.InvalidPasswordException;
+import com.schibsted.spain.friends.application.exceptions.InvalidUsernameException;
+import com.schibsted.spain.friends.application.exceptions.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

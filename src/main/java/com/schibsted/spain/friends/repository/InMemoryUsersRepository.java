@@ -1,5 +1,6 @@
 package com.schibsted.spain.friends.repository;
 
+import com.schibsted.spain.friends.application.repositoryInterfaces.UserRepository;
 import com.schibsted.spain.friends.domain.User;
 
 import java.util.ArrayList;

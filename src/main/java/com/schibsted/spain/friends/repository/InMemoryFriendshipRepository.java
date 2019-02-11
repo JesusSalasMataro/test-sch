@@ -1,5 +1,6 @@
 package com.schibsted.spain.friends.repository;
 
+import com.schibsted.spain.friends.application.repositoryInterfaces.FriendshipRepository;
 import com.schibsted.spain.friends.domain.Friendship;
 import com.schibsted.spain.friends.domain.FriendshipRequest;
 

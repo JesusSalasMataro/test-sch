@@ -1,8 +1,8 @@
 package com.schibsted.spain.friends.configuration;
 
-import com.schibsted.spain.friends.repository.FriendshipRepository;
+import com.schibsted.spain.friends.application.repositoryInterfaces.FriendshipRepository;
 import com.schibsted.spain.friends.application.FriendshipService;
-import com.schibsted.spain.friends.repository.UserRepository;
+import com.schibsted.spain.friends.application.repositoryInterfaces.UserRepository;
 import com.schibsted.spain.friends.application.UserService;
 import com.schibsted.spain.friends.domainservices.FieldValidatorService;
 import com.schibsted.spain.friends.repository.InMemoryFriendshipRepository;

@@ -1,4 +1,4 @@
-package com.schibsted.spain.friends.exceptions;
+package com.schibsted.spain.friends.application.exceptions;
 
 public class UnauthorizedFriendshipActionException extends Exception {
 
