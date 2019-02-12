@@ -1,6 +1,7 @@
 package com.schibsted.spain.friends.repository;
 
 import com.schibsted.spain.friends.application.repositoryInterfaces.UserRepository;
+import com.schibsted.spain.friends.domain.Password;
 import com.schibsted.spain.friends.domain.User;
 
 import java.util.ArrayList;
@@ -27,11 +28,9 @@ public class InMemoryUsersRepository implements UserRepository {
     }
 
     @Override
-    public boolean isValid(User user) {
+    public boolean exists(String username, Password password) {
         return users.stream()
-            .anyMatch(u ->
-                u.getUsername().equals(user.getUsername()) &&
-                u.getPassword().equals(user.getPassword())
-            );
+            .anyMatch(u -> u.getUsername().equals(username) && u.getPassword().equals(password));
     }
+
 }

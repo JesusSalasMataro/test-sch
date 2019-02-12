@@ -5,6 +5,7 @@ import com.schibsted.spain.friends.application.exceptions.InvalidPasswordExcepti
 import com.schibsted.spain.friends.application.exceptions.InvalidUsernameException;
 import com.schibsted.spain.friends.application.exceptions.UserAlreadyExistsException;
 import com.schibsted.spain.friends.application.repositoryInterfaces.UserRepository;
+import com.schibsted.spain.friends.domain.Password;
 import com.schibsted.spain.friends.domain.User;
 import com.schibsted.spain.friends.domainservices.FieldValidatorService;
 
@@ -35,9 +36,7 @@ public class UserService {
         return userRepository.exists(username);
     }
 
-    public void validate(User user) throws InvalidCredentialsException {
-        if (!userRepository.isValid(user)) {
-            throw new InvalidCredentialsException(user);
-        }
+    public boolean exists(String username, Password password) throws InvalidCredentialsException {
+        return userRepository.exists(username, password);
     }
 }

@@ -39,11 +39,11 @@ public class InMemoryUsersRepositoryShould {
     }
 
     @Test
-    public void should_return_if_user_is_valid() throws InvalidPasswordException, InvalidUsernameException {
+    public void should_return_if_user_with_password_exists() throws InvalidPasswordException, InvalidUsernameException {
         User user = new User("jesus", "abcdefghi", validatorService);
         usersRepository.setUser(user);
 
-        Assertions.assertThat(usersRepository.isValid(user)).isTrue();
+        Assertions.assertThat(usersRepository.exists(user.getUsername(), user.getPassword())).isTrue();
     }
 
     @Test

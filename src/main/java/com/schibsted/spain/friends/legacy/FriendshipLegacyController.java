@@ -2,6 +2,7 @@ package com.schibsted.spain.friends.legacy;
 
 import com.schibsted.spain.friends.application.FriendshipService;
 import com.schibsted.spain.friends.application.UserService;
+import com.schibsted.spain.friends.application.exceptions.InvalidCredentialsException;
 import com.schibsted.spain.friends.domain.Password;
 import com.schibsted.spain.friends.domain.User;
 import com.schibsted.spain.friends.domainservices.FieldValidatorService;
@@ -15,6 +16,9 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/friendship")
 public class FriendshipLegacyController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private FieldValidatorService validatorService;
@@ -81,8 +85,13 @@ public class FriendshipLegacyController {
         Collection<String> friends;
 
         try {
-            User user = new User(username, password, validatorService);
-            friends = friendshipService.getFriends(username);
+            if (userService.exists(username, new Password(password))) {
+                friends = friendshipService.getFriends(username);
+            }
+            else {
+                throw new InvalidCredentialsException(username);
+            }
+
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
