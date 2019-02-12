@@ -2,6 +2,7 @@ package integration;
 
 import com.schibsted.spain.friends.domain.Password;
 import com.schibsted.spain.friends.domain.User;
+import com.schibsted.spain.friends.repository.BdUserDto;
 import helpers.ExtendedInMemoryUsersRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -20,10 +21,11 @@ public class InMemoryUsersRepositoryShould {
     @Test
     public void should_save_user() {
         User user = new User("jesus", new Password("abcde"));
+        BdUserDto userDto = new BdUserDto(user.getUsername(), user.getPassword());
 
         usersRepository.save(user);
 
-        Assertions.assertThat(user).isEqualTo(Iterables.firstOf(usersRepository.getUsers()));
+        Assertions.assertThat(userDto).isEqualTo(Iterables.firstOf(usersRepository.getUsers()));
     }
 
     @Test
