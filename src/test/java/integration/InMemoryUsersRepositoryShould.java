@@ -2,7 +2,7 @@ package integration;
 
 import com.schibsted.spain.friends.domain.Password;
 import com.schibsted.spain.friends.domain.User;
-import com.schibsted.spain.friends.repository.BdUserDto;
+import com.schibsted.spain.friends.repository.DbUserDto;
 import helpers.ExtendedInMemoryUsersRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -21,7 +21,7 @@ public class InMemoryUsersRepositoryShould {
     @Test
     public void should_save_user() {
         User user = new User("jesus", new Password("abcde"));
-        BdUserDto userDto = new BdUserDto(user.getUsername(), user.getPassword());
+        DbUserDto userDto = new DbUserDto(user.getUsername(), user.getPassword());
 
         usersRepository.save(user);
 

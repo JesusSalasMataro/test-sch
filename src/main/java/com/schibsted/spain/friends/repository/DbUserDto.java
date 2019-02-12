@@ -4,12 +4,12 @@ import com.schibsted.spain.friends.domain.Password;
 
 import java.util.Objects;
 
-public class BdUserDto {
+public class DbUserDto {
 
     private String username;
     private Password password;
 
-    public BdUserDto(String username, Password password) {
+    public DbUserDto(String username, Password password) {
         this.username = username;
         this.password = password;
     }
@@ -27,9 +27,9 @@ public class BdUserDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BdUserDto bdUserDto = (BdUserDto) o;
-        return Objects.equals(username, bdUserDto.username) &&
-                Objects.equals(password, bdUserDto.password);
+        DbUserDto dbUserDto = (DbUserDto) o;
+        return Objects.equals(username, dbUserDto.username) &&
+                Objects.equals(password, dbUserDto.password);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public class InMemoryUsersRepository implements UserRepository {
 
-    protected Collection<BdUserDto> users;
+    protected Collection<DbUserDto> users;
 
     public InMemoryUsersRepository() {
         users = new ArrayList<>();
@@ -16,7 +16,7 @@ public class InMemoryUsersRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        BdUserDto userDto = new BdUserDto(user.getUsername(), user.getPassword());
+        DbUserDto userDto = new DbUserDto(user.getUsername(), user.getPassword());
         users.add(userDto);
     }
 
