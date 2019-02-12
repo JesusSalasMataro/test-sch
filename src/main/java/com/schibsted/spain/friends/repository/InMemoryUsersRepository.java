@@ -24,13 +24,16 @@ public class InMemoryUsersRepository implements UserRepository {
     @Override
     public boolean exists(String username) {
         return users.stream()
-            .anyMatch(u -> u.getUsername().equals(username));
+            .anyMatch(user -> user.getUsername().equals(username));
     }
 
     @Override
     public boolean exists(String username, Password password) {
         return users.stream()
-            .anyMatch(u -> u.getUsername().equals(username) && u.getPassword().equals(password));
+            .anyMatch(user ->
+                user.getUsername().equals(username) &&
+                user.getPassword().equals(password)
+            );
     }
 
 }
