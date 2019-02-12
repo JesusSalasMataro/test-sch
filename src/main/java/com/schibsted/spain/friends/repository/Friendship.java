@@ -1,4 +1,4 @@
-package com.schibsted.spain.friends.domain;
+package com.schibsted.spain.friends.repository;
 
 public class Friendship {
 

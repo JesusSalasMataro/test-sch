@@ -1,7 +1,7 @@
 package integration;
 
-import com.schibsted.spain.friends.domain.Friendship;
-import com.schibsted.spain.friends.domain.FriendshipRequest;
+import com.schibsted.spain.friends.repository.Friendship;
+import com.schibsted.spain.friends.repository.FriendshipRequest;
 import helpers.ExtendedInMemoryFriendsRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;

@@ -1,8 +1,6 @@
 package com.schibsted.spain.friends.repository;
 
 import com.schibsted.spain.friends.application.repositoryInterfaces.FriendshipRepository;
-import com.schibsted.spain.friends.domain.Friendship;
-import com.schibsted.spain.friends.domain.FriendshipRequest;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,8 +19,8 @@ public class InMemoryFriendshipRepository implements FriendshipRepository {
 
     @Override
     public void addFriendshipRequest(String requesterUsername, String requestedUsername) {
-        FriendshipRequest friendship = new FriendshipRequest(requesterUsername, requestedUsername);
-        friendshipsRequests.add(friendship);
+        FriendshipRequest friendshipRequest = new FriendshipRequest(requesterUsername, requestedUsername);
+        friendshipsRequests.add(friendshipRequest);
     }
 
     @Override

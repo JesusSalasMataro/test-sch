@@ -1,7 +1,7 @@
 package helpers;
 
-import com.schibsted.spain.friends.domain.Friendship;
-import com.schibsted.spain.friends.domain.FriendshipRequest;
+import com.schibsted.spain.friends.repository.Friendship;
+import com.schibsted.spain.friends.repository.FriendshipRequest;
 import com.schibsted.spain.friends.repository.InMemoryFriendshipRepository;
 
 import java.util.Collection;
