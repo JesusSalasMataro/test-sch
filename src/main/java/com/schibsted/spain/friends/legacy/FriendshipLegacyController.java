@@ -4,6 +4,7 @@ import com.schibsted.spain.friends.application.FriendshipService;
 import com.schibsted.spain.friends.application.UserService;
 import com.schibsted.spain.friends.domain.Password;
 import com.schibsted.spain.friends.domain.User;
+import com.schibsted.spain.friends.domainservices.FieldValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.Collection;
 public class FriendshipLegacyController {
 
     @Autowired
-    private UserService userService;
+    private FieldValidatorService validatorService;
 
     @Autowired
     private FriendshipService friendshipService;
@@ -29,8 +30,7 @@ public class FriendshipLegacyController {
     ) {
 
         try {
-            Password encriptedPassword = new Password(password);
-            userService.validate(new User(usernameFrom, encriptedPassword));
+            User user = new User(usernameFrom, password, validatorService);
             friendshipService.requestFriendship(usernameFrom, usernameTo);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -47,8 +47,7 @@ public class FriendshipLegacyController {
     ) {
 
         try {
-            Password encriptedPassword = new Password(password);
-            userService.validate(new User(usernameFrom, encriptedPassword));
+            User user = new User(usernameFrom, password, validatorService);
             friendshipService.acceptFriendShip(usernameFrom, usernameTo);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -65,8 +64,7 @@ public class FriendshipLegacyController {
     ) {
 
         try {
-            Password encriptedPassword = new Password(password);
-            userService.validate(new User(usernameFrom, encriptedPassword));
+            User user = new User(usernameFrom, password, validatorService);
             friendshipService.declineFrienshipRequest(usernameFrom, usernameTo);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -83,8 +81,7 @@ public class FriendshipLegacyController {
         Collection<String> friends;
 
         try {
-            Password encriptedPassword = new Password(password);
-            userService.validate(new User(username, encriptedPassword));
+            User user = new User(username, password, validatorService);
             friends = friendshipService.getFriends(username);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

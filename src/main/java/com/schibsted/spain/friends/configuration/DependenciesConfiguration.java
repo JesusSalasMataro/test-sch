@@ -38,4 +38,5 @@ public class DependenciesConfiguration {
     FriendshipService getFriendshipService(UserService userService, FriendshipRepository friendshipRepository) {
         return new FriendshipService(userService, friendshipRepository);
     }
+
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FieldValidatorService {
+
     private static final int USERNAME_MINIMUM_LENGTH = 5;
     private static final int USERNAME_MAXIMUM_LENGTH = 10;
     private static final int PASSWORD_MINIMUM_LENGTH = 8;
