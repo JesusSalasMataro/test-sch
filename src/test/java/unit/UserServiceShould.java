@@ -1,33 +1,30 @@
 package unit;
 
-import com.schibsted.spain.friends.application.repositoryInterfaces.UserRepository;
 import com.schibsted.spain.friends.application.UserService;
-import com.schibsted.spain.friends.domain.User;
-import com.schibsted.spain.friends.domainservices.FieldValidatorService;
 import com.schibsted.spain.friends.application.exceptions.InvalidPasswordException;
 import com.schibsted.spain.friends.application.exceptions.InvalidUsernameException;
-
 import com.schibsted.spain.friends.application.exceptions.UserAlreadyExistsException;
+import com.schibsted.spain.friends.application.repositoryInterfaces.UserRepository;
+import com.schibsted.spain.friends.domain.User;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InOrder;
 
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class UserServiceShould {
 
-    private static FieldValidatorService validatorService;
     private static UserRepository userRepository;
     private static UserService sut;
 
     @Before
     public void numOnceBeforeEachTest() {
-        validatorService = new FieldValidatorService();
         userRepository = mock(UserRepository.class);
         doNothing().when(userRepository).save(isA(User.class));
-        sut = new UserService(validatorService, userRepository);
+        sut = new UserService(userRepository);
     }
 
     @Test(expected = InvalidUsernameException.class)
@@ -65,17 +62,4 @@ public class UserServiceShould {
         when(userRepository.exists(isA(String.class))).thenReturn(true);
         sut.registerNewUser(username, password);
     }
-
-    @Test
-    public void call_encript_after_validations() throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
-        validatorService = mock(FieldValidatorService.class);
-        sut = new UserService(validatorService, userRepository);
-
-        sut.registerNewUser("jesus", "abcdefgh");
-
-        InOrder inOrder = inOrder(validatorService);
-        inOrder.verify(validatorService).validateUsername(isA(String.class));
-        inOrder.verify(validatorService).validatePassword(isA(String.class));
-    }
-    
 }

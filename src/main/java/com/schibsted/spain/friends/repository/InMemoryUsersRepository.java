@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class InMemoryUsersRepository implements UserRepository {
 
-    protected Collection<DbUserDto> users;
+    protected Collection<User> users;
 
     public InMemoryUsersRepository() {
         users = new ArrayList<>();
@@ -17,21 +17,20 @@ public class InMemoryUsersRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        DbUserDto userDto = new DbUserDto(user.getUsername(), user.getPassword());
-        users.add(userDto);
+        users.add(user);
     }
 
     @Override
     public boolean exists(String username) {
         return users.stream()
-            .anyMatch(user -> user.getUsername().equals(username));
+            .anyMatch(user -> user.getUsername().asString().equals(username));
     }
 
     @Override
     public boolean exists(String username, Password password) {
         return users.stream()
             .anyMatch(user ->
-                user.getUsername().equals(username) &&
+                user.getUsername().asString().equals(username) &&
                 user.getPassword().equals(password)
             );
     }

@@ -7,16 +7,12 @@ import com.schibsted.spain.friends.application.exceptions.UserAlreadyExistsExcep
 import com.schibsted.spain.friends.application.repositoryInterfaces.UserRepository;
 import com.schibsted.spain.friends.domain.Password;
 import com.schibsted.spain.friends.domain.User;
-import com.schibsted.spain.friends.domainservices.FieldValidatorService;
 
 public class UserService {
 
-    private FieldValidatorService validatorService;
     private UserRepository userRepository;
 
-    public UserService (FieldValidatorService validatorService, UserRepository userRepository) {
-
-        this.validatorService = validatorService;
+    public UserService (UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -27,16 +23,15 @@ public class UserService {
             throw new UserAlreadyExistsException();
         }
 
-        User user = new User(username, password, validatorService);
+        User user = new User(username, password);
         userRepository.save(user);
     }
-
 
     public boolean exists(String username) {
         return userRepository.exists(username);
     }
 
-    public boolean exists(String username, Password password) throws InvalidCredentialsException {
+    public boolean exists(String username, Password password) {
         return userRepository.exists(username, password);
     }
 }
